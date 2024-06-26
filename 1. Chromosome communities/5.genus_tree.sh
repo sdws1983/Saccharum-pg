@@ -1,0 +1,1 @@
+mash triangle -p 40 fasta/Srufi.renamed.fasta.gz fasta/Srufi2.renamed.fasta.gz fasta/AP85.renamed.fasta.gz fasta/NpX.renamed.fasta.gz fasta/LAp.renamed.fasta.gz fasta/ZG.renamed.fasta.gz fasta/ROC22.renamed.fasta.gz fasta/nR570.renamed.fasta.gz fasta/ZZ.renamed.fasta.gz > genus.dis
