@@ -19,7 +19,7 @@ prefix="LA-2-LF15"
 f="LA-2"
 
 mkdir -p $f
-~/software/vg map -t 80 -x ${index}/wg.xg -g ${index}/wg.gcsa -f ~/others/ZG/data/Fastp过滤后数据/Merge_data/${prefix}_1.fq.gz -f ~/others/ZG/data/Fastp过滤后数据/Merge_data/${prefix}_2.fq.gz > ${f}/${prefix}.gam
+~/software/vg map -t 80 -x ${index}/wg.xg -g ${index}/wg.gcsa -f Merge_data/${prefix}_1.fq.gz -f Merge_data/${prefix}_2.fq.gz > ${f}/${prefix}.gam
 
 vg stats -a ${f}/${prefix}.gam
 

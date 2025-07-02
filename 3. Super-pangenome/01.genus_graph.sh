@@ -42,11 +42,6 @@ for i in `seq 0 9`; do
 	ref=Srufi
 
 	so=$s
-	
-	#if [ $i -lt 5 ]  
-	#then  
-	#so=$(echo "$s * 2" | bc)
-	#fi
 
 	l=$(echo "$so * 5" | bc)
 	out=genus.community.${i}_p$p.s$so.l$l.n$n.k$k.POA$POA.O$O.G$(echo $G | tr ',' '-').$ref

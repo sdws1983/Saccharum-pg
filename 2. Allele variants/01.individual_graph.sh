@@ -39,10 +39,6 @@ for i in `seq 1 10`; do
 
 	so=$s
 	
-	#if [ $i -lt 5 ]  
-	#then  
-	#so=$(echo "$s * 2" | bc)
-	#fi
 
 	l=$(echo "$so * 5" | bc)
 	out=ROC22.Chr${i}_p$p.s$so.l$l.n$n.k$k.POA$POA.O$O.G$(echo $G | tr ',' '-').$ref

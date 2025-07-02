@@ -3,14 +3,14 @@
 index="LAp_A.fasta"
 
 echo "LAp-2-LF15, hap"
-bowtie2 -p 40 --very-sensitive -X 1000 -x $index -1 ~/others/ZG/data/Fastp过滤后数据/Merge_data/LA-2-LF15_1.fq.gz -2 ~/others/ZG/data/Fastp过滤后数据/Merge_data/LA-2-LF15_2.fq.gz|samtools sort -@ 40 -T LA-2-LF1 -o ./bamoutput/LA-2-LF15.hap.bam 
+bowtie2 -p 40 --very-sensitive -X 1000 -x $index -1 Merge_data/LA-2-LF15_1.fq.gz -2 Merge_data/LA-2-LF15_2.fq.gz|samtools sort -@ 40 -T LA-2-LF1 -o ./bamoutput/LA-2-LF15.hap.bam 
 /share/home/off_huangyumin/software/gatk-4.3.0.0/gatk MarkDuplicates -I ./bamoutput/LA-2-LF15.hap.bam -O ./bamoutput/LA-2-LF15.hap.MD.bam -M ./bamoutput/LA-2-LF15.hap.MD.metrics --REMOVE_DUPLICATES true --TMP_DIR bamoutput/ 
 
 
 index="/share/home/off_huangyumin/reference/LA_purple/LAp_v20220608.genome.fasta"
 
 echo "LAp-2-LF15, all"
-bowtie2 -p 40 --very-sensitive -X 1000 -x $index -1 ~/others/ZG/data/Fastp过滤后数据/Merge_data/LA-2-LF15_1.fq.gz -2 ~/others/ZG/data/Fastp过滤后数据/Merge_data/LA-2-LF15_2.fq.gz|samtools sort -@ 40 -T LA-2-LF1 -o ./bamoutput/LA-2-LF15.all.bam 
+bowtie2 -p 40 --very-sensitive -X 1000 -x $index -1 Merge_data/LA-2-LF15_1.fq.gz -2 Merge_data/LA-2-LF15_2.fq.gz|samtools sort -@ 40 -T LA-2-LF1 -o ./bamoutput/LA-2-LF15.all.bam 
 /share/home/off_huangyumin/software/gatk-4.3.0.0/gatk MarkDuplicates -I ./bamoutput/LA-2-LF15.all.bam -O ./bamoutput/LA-2-LF15.all.MD.bam -M ./bamoutput/LA-2-LF15.all.MD.metrics --REMOVE_DUPLICATES true --TMP_DIR bamoutput/ 
 
 

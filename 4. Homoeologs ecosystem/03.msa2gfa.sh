@@ -26,5 +26,3 @@ done
 #!
 
 
-#ls msas_proteins_0.4/|awk '{print "~/software/Gblocks_0.91b/Gblocks msas_proteins_0.4/"$0" -t=p -b3=1 -b4=2 -b5=a"}'|bash -
-#ls msas_dna_0.4/|awk '{print "~/software/Gblocks_0.91b/Gblocks msas_dna_0.4/"$0" -t=d -b3=1 -b4=2 -b5=a"}'|bash -
