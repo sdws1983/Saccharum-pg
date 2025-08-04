@@ -11,6 +11,8 @@
 5. Chromatin regulatory
 6. Population genomics
 7. GWAS
+8. Other polyploid species
+9. Benchmark
 
 # Citation
 
