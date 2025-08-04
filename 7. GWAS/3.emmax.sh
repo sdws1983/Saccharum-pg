@@ -1,1 +1,0 @@
-~/software/emmax-intel64 -t emmax/emmax_in.Chr01 -o res/emmax.Chr01.GZZTF.qk -p traits.GZZTF.txt -k emmax_in.BN.kinf -c emmax_in.cov.txt -Z

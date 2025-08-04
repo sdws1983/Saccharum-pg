@@ -14,7 +14,7 @@ exec 2>job.${PBS_JOBID}.${PBS_JOBNAME}.stderr
 
 echo 1
 
-#bcftools merge --threads 60 -o all.combined.raw.sh.vcf.gz -O z ../../sh/*gz
+bcftools merge --threads 60 -o all.combined.raw.sh.vcf.gz -O z ../../sh/*gz
 
 vcftools --gzvcf all.combined.raw.sh.vcf.gz \
         --recode-INFO-all \
