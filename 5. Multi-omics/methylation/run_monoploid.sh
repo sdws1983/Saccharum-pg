@@ -39,6 +39,46 @@ BatMeth2 calmeth -Q 20 --remove_dup --coverage 4 -nC 1 \
     --binput SES-prem-S.R1_bismark_bt2_pe.sort.bam \
     --methratio $samp > ${samp}.log
 
+# build index for ZG genome
+bismark_genome_preparation  --bowtie2  --parallel 5   --verbose ./genome/
+# mapping
+bismark --bowtie2  --bam -p 40 -o mature_leaf  ./genome/  -1 ./B48_ZG_merge_WGBS_data/B48-m-L.R1.fastq.gz  -2 ./B48_ZG_merge_WGBS_data/B48-m-L.R2.fastq.gz
+bismark --bowtie2  --bam -p 40 -o mature_stem  ./genome/  -1 ./B48_ZG_merge_WGBS_data/B48-m-S.R1.fastq.gz   -2 ./B48_ZG_merge_WGBS_data/B48-m-S.R2.fastq.gz
+bismark --bowtie2  --bam -p 40 -o prem_leaf  ./genome/  -1 ./B48_ZG_merge_WGBS_data/B48-prem-L.R1.fastq.gz   -2 ./B48_ZG_merge_WGBS_data/B48-prem-L.R2.fastq.gz
+bismark --bowtie2  --bam -p 50  -o prem_stem  ./genome/  -1 ./B48_ZG_merge_WGBS_data/B48-prem-S.R1.fastq.gz   -2 ./B48_ZG_merge_WGBS_data/B48-prem-S.R2.fastq.gz
+samtools sort -@ 20  B48-m-L.R1_bismark_bt2_pe.bam  -o B48-m-L.R1_bismark_bt2_pe.sort.bam
+samtools sort -@ 10  B48-m-S.R1_bismark_bt2_pe.bam  -o B48-m-S.R1_bismark_bt2_pe.sort.bam 
+samtools sort -@  10  B48-prem-L.R1_bismark_bt2_pe.bam   -o B48-prem-L.R1_bismark_bt2_pe.sort.bam 
+samtools sort -@ 100  B48-prem-S.R1_bismark_bt2_pe.bam  -o B48-prem-S.R1_bismark_bt2_pe.sort.bam 
+# calculate the methylation level
+samp=mature_leaf
+BatMeth2 calmeth -Q 20 --remove_dup --coverage 4 -nC 1 \
+    --Regions 600 --step 50000 \
+    --genome ../genome/ZG.v20211208.genome.fasta \
+    --binput  B48-m-L.R1_bismark_bt2_pe.sort.bam \
+    --methratio $samp > ${samp}.log
+	
+samp=mature_stem
+BatMeth2 calmeth -Q 20 --remove_dup --coverage 4 -nC 1 \
+    --Regions 600 --step 50000 \
+    --genome ../genome/ZG.v20211208.genome.fasta \
+    --binput B48-m-S.R1_bismark_bt2_pe.sort.bam \
+    --methratio $samp > ${samp}.log
+
+samp=prem_leaf
+BatMeth2 calmeth -Q 20 --remove_dup --coverage 4 -nC 1 \
+    --Regions 600 --step 50000 \
+    --genome ../genome/ZG.v20211208.genome.fasta \
+    --binput B48-prem-L.R1_bismark_bt2_pe.sort.bam  \
+    --methratio $samp > ${samp}.log
+
+samp=prem_stem
+BatMeth2 calmeth -Q 20 --remove_dup --coverage 4 -nC 1 \
+    --Regions 600 --step 50000 \
+    --genome ../genome/ZG.v20211208.genome.fasta \
+    --binput B48-prem-S.R1_bismark_bt2_pe.sort.bam  \
+    --methratio $samp > ${samp}.log
+	
 # detail information
 for file in *methratio.txt; do
     out="${file%.methratio.txt}"
