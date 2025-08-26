@@ -178,9 +178,18 @@ for fq1 in $input_dir/*X1.fq; do
 done
 
 ### 07. Rna-seq analyse based on graph pangenome
-vg autoindex --threads 24 --workflow mpmap --workflow rpvg --prefix wheat \
---ref-fasta chinese_spring.fa   -v merged.vcf.gz  \
---tx-gff merge.renamed.gff  -T ./ --gff-tx-tag Parent
+# remove the lengthy variances and variances outside the gene area
+awk '$3 == "gene" {print $1"\t"$4-1"\t"$5}' merge.renamed.gff   | bedtools sort > genes.bed
+bedtools slop -b 50000 -i genes.bed -g chineses.fa.fai  > genes_expanded.bed
+bcftools view   -i 'strlen(REF)<=200 && strlen(ALT)<=200 && REF!="N" && ALT!="N" && REF!~"N" && ALT!~"N"' merged.vcf.gz -Oz -o merged.filted.vcf.gz
+bcftools view -R genes_expanded.bed merged.filted.vcf.gz -Oz -o merged.filted.gene_nearby_50000.vcf.gz
+
+# enlarge gcsa-size-limit parameter
+vg autoindex --threads 24 --workflow mpmap --workflow rpvg --prefix wheat_50000 \
+--gcsa-size-limit 20000000000000 \
+--ref-fasta ../chineses.fa   -v ../merged.filted.gene_nearby_50000.vcf.gz  \
+--tx-gff ../merge.renamed.gff  -T ./ --gff-tx-tag Parent -f CDS
+
 
 GRAPH="wheat_50000.spliced.xg"
 GCSA="wheat_50000.spliced.gcsa"
