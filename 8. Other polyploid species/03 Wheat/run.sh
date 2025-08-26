@@ -182,15 +182,25 @@ vg autoindex --threads 24 --workflow mpmap --workflow rpvg --prefix wheat \
 --ref-fasta chinese_spring.fa   -v merged.vcf.gz  \
 --tx-gff merge.renamed.gff  -T ./ --gff-tx-tag Parent
 
-GRAPH="wheat.spliced.xg"
-GCSA="wheat.spliced.gcsa"
-DIST_INDEX="wheat.spliced.dist"
-for r1 in ../fq/*.fastq.gz; do
-        base=$(basename "$r1" .fastq.gz)
-		echo "vg mpmap -t 10   -x ${GRAPH} -g ${GCSA} -d ${DIST_INDEX} -f $r1  1>${out_folder_graphs}/$base.gamp 2>$base.log "
+GRAPH="wheat_50000.spliced.xg"
+GCSA="wheat_50000.spliced.gcsa"
+DIST_INDEX="wheat_50000.spliced.dist"
+out_folder_graphs=./
+for r1 in ../../fq/*_1.fastq.gz; do
+    r2="${r1/_1.fastq.gz/_2.fastq.gz}"
+    if [ -f "$r2" ]; then
+        base=$(basename "$r1" _1.fastq.gz)
+		echo "vg mpmap -t 20  -x ${GRAPH} -g ${GCSA} -d ${DIST_INDEX} -f $r1 -f $r2 1>${out_folder_graphs}/$base.gamp 2>$base.log"
+    else
+        echo "Missing pair for: $r1"
+    fi
+done
+
 
 hisat2-build -p 50 chinese_spring.fa chinese_spring
-for r1 in ../fq/*.fastq.gz; do
-		base=$(basename "$r1" .fastq.gz)
-		hisat2 -p 50 -x chinese_spring    --dta   -U $r1   | samtools sort -@ 10 -o  ${base}.bam
+for r1 in ../fq/*1.fastq.gz; do
+    r2="${r1/1.fastq.gz/2.fastq.gz}"
+        base=$(basename "$r1" 1.fastq.gz)
+		echo "hisat2 -p 50 -x chineses   --dta   -1 $r1 -2 $r2   | samtools sort -@ 10 -o  ${base}.bam "
 done
+
