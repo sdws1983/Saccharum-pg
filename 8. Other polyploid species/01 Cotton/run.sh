@@ -90,15 +90,17 @@ done
 ### 06. Rna-seq analyse based on graph pangenome
 vg autoindex --threads 24 --workflow mpmap --workflow rpvg --prefix catton  --ref-fasta ZY10.chr.fa  -v merged_rename.vcf.gz \
 --tx-gff ZY10.chr.gene.gff3 -T ./ --gff-tx-tag Parent
-GRAPH="catton.spliced.xg"
-GCSA="catton.spliced.gcsa"
-DIST_INDEX="catton.spliced.dist"
-for r1 in ../fq/*.fastq.gz; do
-        base=$(basename "$r1" .fastq.gz)
-		echo "vg mpmap -t 10   -x ${GRAPH} -g ${GCSA} -d ${DIST_INDEX} -f $r1  1>${out_folder_graphs}/$base.gamp 2>$base.log "
+GRAPH="../cotton.spliced.xg"
+GCSA="../cotton.spliced.gcsa"
+DIST_INDEX="../cotton.spliced.dist"
+for r1 in ../fq/*_1.fastq.gz; do
+	base=$(basename ${r1}  _1.fastq.gz)
+    r2="${r1/_1.fastq.gz/_2.fastq.gz}"
+	echo "vg mpmap -t 20  -x ${GRAPH} -g ${GCSA} -d ${DIST_INDEX} -f $r1 -f $r2 1>$base.gamp 2>$base.log"
 
-hisat2-build -p 50 ZY10.chr.fa ZY
-for r1 in ../fq/*.fastq.gz; do
-		base=$(basename "$r1" .fastq.gz)
-		hisat2 -p 50 -x ZY    --dta   -U $r1   | samtools sort -@ 10 -o  ${base}.bam
+for r1 in ../fq/*_1.fastq.gz; do
+	base=$(basename ${r1}  _1.fastq.gz)
+	r2="${r1/_1.fastq.gz/_2.fastq.gz}"
+		echo "hisat2 -p 50 -x ROC22.V0917    --dta   -1 $r1 -2 $r2   | samtools sort -@ 10 -o  ${base}.bam "
 done
+
