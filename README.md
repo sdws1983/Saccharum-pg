@@ -1,14 +1,15 @@
-# Multiscale pangenome graphs facilitate the genetic dissection of mixed polyploid species *Saccharum*
+# *Saccharum* multiscale super-pangenome project
 
-![未标题-1](https://github.com/sdws1983/Saccharum-pg/assets/18738943/1d114457-d0ac-4840-aa60-a3c7cfa1da08)
+<img width="6598" height="2747" alt="community 800" src="https://github.com/user-attachments/assets/8687dce2-f3ef-4f4a-8fd8-be0197c46a57" />
+
 
 # Content
 
 1. Chromosome communities
 2. Allele variants
 3. Super-pangenome
-4. homoeologs ecosystem
-5. Chromatin regulatory
+4. Homoeologs ecosystem
+5. Multi-omics
 6. Population genomics
 7. GWAS
 8. Other polyploid species
