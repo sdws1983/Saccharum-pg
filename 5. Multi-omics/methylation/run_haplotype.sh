@@ -80,8 +80,6 @@ BatMeth2 calmeth -Q 20 --remove_dup --coverage 4 -nC 1 \
 # detail information
 for file in *methratio.txt; do
     out="${file%.methratio.txt}"
-	cut -f 5 ${file} | sort | uniq -c > ${out}.converage
-	cut -f 7 ${file} | sort | uniq -c > ${out}.density
     awk 'NR>1{c=$5;ctx=$4;if(c>5)gt[ctx]++;else if(c<=5)lt[ctx]++}END{for(k in gt)print k"\t"gt[k]"\t"lt[k]}' ${file} > ${out}.per_methy
 done
 for bam in *sort.bam; do
