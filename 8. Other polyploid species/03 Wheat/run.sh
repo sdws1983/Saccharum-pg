@@ -135,49 +135,7 @@ while read chr len _; do
 done < "$FAI"
 sed -i  's/_part//g' Chr*.gff
 
-
-
-
-### 06. Simulate reads and map them to line genome and graph pangenome
-for fq in *.chr.fa; do
-    base=$(basename "$fq" .chr.fa)
-	art_illumina  -ss HS25 -i ${fq} -p -l 150 -f 20 -m 400 -s 10 -na -o ${base}_20X && gzip ${base}_20X1.fq &&  gzip ${base}_20X2.fq
-done
-
-
-vg autoindex --threads 40   -T tem --workflow giraffe -r  chinese_spring.fa   -p wheat   -v  merged.vcf.gz
-input_dir=./fq/
-output_dir=./
-for fq1 in "$input_dir"/*X1.fq; do
-    base=$(basename "$fq1" X1.fq)
-    fq2="$input_dir/${base}X2.fq"
-    fq1_local="${base}X1.fq"
-    fq2_local="${base}X2.fq"
-
-    vg giraffe -t 20 -p \
-    -d wheat.dist \
-    -m wheat.min \
-    -Z wheat.giraffe.gbz \
-    -f "$input_dir"/"$fq1_local" -f "$input_dir"/"$fq2_local" \
-    > \"${base}.gam\" 2>${base}.log
-done
-
-
-
-input_dir=./pres/
-output_dir=./
-bwa index chinese_spring.fa
-for fq1 in $input_dir/*X1.fq; do
-    [ ! -f "$fq1" ] && continue
-    base=$(basename "$fq1" X1.fq)
-    fq2="${input_dir}/${base}X2.fq"
-    fq1_path="${input_dir}/${base}X1.fq"
-    sam_out="${output_dir}/${base}.bam"
-    log_out="${output_dir}/${base}.log"
-    echo "bwa mem -t 40 chinese_spring.fa  \"$fq1_path\" \"$fq2\" | samtools view -b > \"$sam_out\" 2> \"$log_out\""
-done
-
-### 07. Rna-seq analyse based on graph pangenome
+### 06. Rna-seq analyse based on graph pangenome
 # remove the lengthy variances and variances outside the gene area
 awk '$3 == "gene" {print $1"\t"$4-1"\t"$5}' merge.renamed.gff   | bedtools sort > genes.bed
 bedtools slop -b 50000 -i genes.bed -g chineses.fa.fai  > genes_expanded.bed
