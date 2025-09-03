@@ -21,50 +21,9 @@ for i in node edge bp;do
 ./panacus-visualize.py pggb.histgrowth.${i}.tsv > pggb.histgrowth.${i}.pdf
 done
 
-### 05. Simulate reads
-for fq in *.chr.fa; do
-    base=$(basename "$fq" .chr.fa)
-	art_illumina  -ss HS25 -i ${fq} -p -l 150 -f 20 -m 400 -s 10 -na -o ${base}_20X
-done
-# graph
+### 05.Rna-seq analyse
 bcftools view -i 'strlen(REF)<1000 && strlen(ALT)<1000' -o merge.filtered.vcf merge.vcf
 bgzip -@ 80 merge.filtered.vcf
-vg autoindex --threads 20 --workflow giraffe -r  WhR_A.fa   -p  potato    -v  merge.filtered.vcf.gz
-for fq1 in ../../simulate_reads/*1.fq; do
-    base=$(basename "$fq1" X1.fq)
-    fq1_local="${base}X1.fq"
-    fq2_local="${base}X2.fq"
-    echo "vg giraffe -t 10 -p -Z potato.giraffe.gbz -m potato.min -d potato.dist -f ../../simulate_reads/${fq1_local} -f ../../simulate_reads/${fq2_local} 1>${base}.gam 2>${base}.log"
-done
-# haplotype
-a=$(ls *fa)
-bwa index "$a"
-input_dir=../../simulate_reads
-output_dir=./
-for fq1 in $input_dir/*X1.fq; do
-    base=$(basename "$fq1" X1.fq)
-    fq2="${input_dir}/${base}X2.fq"
-    fq1_path="${input_dir}/${base}X1.fq"
-    sam_out="${output_dir}/${base}.bam"
-    log_out="${output_dir}/${base}.log"
-
-    echo "bwa mem -t 10 WhR.fa \"$fq1_path\" \"$fq2\" | samtools view -b > \"$sam_out\" 2> \"$log_out\""
-done
-# monoploid
-a=$(ls *fa)
-bwa index "$a"
-input_dir=../../simulate_reads
-output_dir=./
-for fq1 in $input_dir/*X1.fq; do
-    base=$(basename "$fq1" X1.fq)
-    fq2="${input_dir}/${base}X2.fq"
-    fq1_path="${input_dir}/${base}X1.fq"
-    sam_out="${output_dir}/${base}.bam"
-    log_out="${output_dir}/${base}.log"
-    echo "bwa mem -t 10  WhR.1.fa  \"$fq1_path\" \"$fq2\" | samtools view -b > \"$sam_out\" 2> \"$log_out\""
-done
-
-### 06.Rna-seq analyse
 vg autoindex --threads 128  --workflow mpmap  --prefix potato \
 --ref-fasta WhR_A.fa   -v merge.filtered.vcf.gz  \
 --tx-gff WhR_A_hap1_liftoff.gff3  -T ./ --gff-tx-tag Parent -f CDS
