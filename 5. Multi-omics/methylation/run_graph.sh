@@ -109,8 +109,6 @@ for bam in *gaf; do
     cut -f 12 "$bam" | sort -n | uniq -c > "$out"
 for file in *methyl; do
     out="${file%.methyl}"
-	cut -f 6 ${file} | sort | uniq -c > ${out}.converage
-	cut -f 8 ${file} | sort | uniq -c > ${out}.density
     awk '{c=$6;ctx=$4;if(c>5)gt[ctx]++;else if(c<=5)lt[ctx]++}END{for(k in gt)print k"\t"gt[k]"\t"lt[k]}' ${file} > ${out}.per_methy
 
 done
