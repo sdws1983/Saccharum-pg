@@ -1,6 +1,6 @@
 # *Saccharum* multiscale super-pangenome project
 
-<img width="6598" height="2747" alt="community 800" src="https://github.com/user-attachments/assets/8687dce2-f3ef-4f4a-8fd8-be0197c46a57" />
+<img width="5107" height="2060" alt="community 800" src="https://github.com/user-attachments/assets/4c9b3225-8d95-4d41-8947-410a49e3b454" />
 
 
 # Content
@@ -16,6 +16,8 @@
 9. Benchmark
 
 # Citation
+
+Y. Huang *et al.*, Multiscale Super-Pangenome Graphs Empower the Genomic Dissection of Mixed-Ploidy Saccharum Species. 
 
 # Contacts
 
